@@ -36,6 +36,8 @@ After running the script:
 
 ## 🔧 Usage
 
+### Manual Use
+
 1. **Download or clone this repository**
 2. **Run the script in your terminal**
 
@@ -46,6 +48,74 @@ bash organize_downloads.sh
 By default, it organizes files under `~/Downloads/`.
 
 > 💡 You can customize the target folder by modifying the `DOWNLOAD_DIR` variable at the top of the script.
+
+---
+
+## 🤖 Automate with Automator on macOS
+
+To make this script run automatically using Automator:
+
+### 1. Save the Script
+
+Place the script file in a safe location, for example:
+
+```
+~/Library/Scripts/organize_downloads.sh
+```
+
+Make it executable:
+
+```bash
+chmod +x ~/Library/Scripts/organize_downloads.sh
+```
+
+### 2. Create an Automator App
+
+1. Open **Automator**
+2. Create a new **Application**
+3. Add the **Run Shell Script** action
+4. In the shell script box, enter:
+
+```bash
+~/Library/Scripts/organize_downloads.sh
+```
+
+5. Save the application, e.g., as `Downloads Organizer.app`
+
+You can now run this app manually, or configure it to launch on login or at timed intervals.
+
+---
+
+## ⏱ Optional: Run Automatically with LaunchAgent
+
+To schedule the script to run every 30 minutes:
+
+1. Create a file at `~/Library/LaunchAgents/com.user.organizedownloads.plist` with this content:
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+  <key>Label</key>
+  <string>com.user.organizedownloads</string>
+  <key>ProgramArguments</key>
+  <array>
+    <string>/Users/YOUR_NAME/Library/Scripts/organize_downloads.sh</string>
+  </array>
+  <key>StartInterval</key>
+  <integer>1800</integer>
+  <key>RunAtLoad</key>
+  <true/>
+</dict>
+</plist>
+```
+
+2. Load it with:
+
+```bash
+launchctl load ~/Library/LaunchAgents/com.user.organizedownloads.plist
+```
 
 ---
 
@@ -61,7 +131,7 @@ cd ~/Downloads/test_env
 # Create dummy files
 touch file.txt file.txt image.png
 
-# Run script after modifying DOWNLOAD_DIR inside the script to:
+# Modify DOWNLOAD_DIR in the script to:
 # DOWNLOAD_DIR="$HOME/Downloads/test_env"
 bash organize_downloads.sh
 ```
