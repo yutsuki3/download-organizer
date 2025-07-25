@@ -36,7 +36,7 @@
 
 ---
 
-## 🔧 使い方（手動）
+## 🔧 手動で使う場合
 
 1. このリポジトリをダウンロードまたはクローン
 2. ターミナルで以下を実行：
@@ -45,75 +45,37 @@
 bash organize_downloads.sh
 ```
 
-> 💡 フォルダの場所を変更したい場合は、スクリプト内の `DOWNLOAD_DIR` を変更してください。
+> 💡 フォルダの場所を変更したい場合は、スクリプト内の `DOWNLOAD_DIR` を編集してください。
 
 ---
 
-## 🤖 Automator（オートメーター）で自動化する方法（macOS）
+## 🤖 macOS Automator の「フォルダアクション」で自動化する方法
 
-### 1. スクリプトを保存
+ファイルが Downloads フォルダに追加されたときに、自動でスクリプトを実行したい場合：
 
-スクリプトを以下のように保存します：
-
-```
-~/Library/Scripts/organize_downloads.sh
-```
-
-実行権限を付与：
+### 1. スクリプトを保存して実行権限を付与
 
 ```bash
+mkdir -p ~/Library/Scripts
+cp organize_downloads.sh ~/Library/Scripts/
 chmod +x ~/Library/Scripts/organize_downloads.sh
 ```
 
----
-
-### 2. Automator アプリを作成
+### 2. Automator でフォルダアクションを設定
 
 1. Automator を起動
-2. 「新規書類」→「アプリケーション」を選択
-3. 「シェルスクリプトを実行」アクションを追加
-4. 以下を入力：
+2. 「新規書類」→「フォルダアクション」を選択
+3. 「このフォルダを監視」→ `Downloads` を選択
+4. 「シェルスクリプトを実行」アクションを追加
+5. 次のように入力：
 
 ```bash
 ~/Library/Scripts/organize_downloads.sh
 ```
 
-5. アプリ名を「Downloads Organizer」などにして保存（例：アプリケーションフォルダ内）
+6. 保存（例：`DownloadsOrganizer.workflow`）
 
-> 🚀 保存したアプリを Dock に置いたり、ログイン時に起動させることも可能です。
-
----
-
-## ⏱ LaunchAgent を使って完全自動実行（オプション）
-
-30分ごとに自動実行したい場合は以下の方法もあります：
-
-1. 以下の内容で `~/Library/LaunchAgents/com.user.organizedownloads.plist` を作成：
-
-```xml
-<?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
-<plist version="1.0">
-<dict>
-  <key>Label</key>
-  <string>com.user.organizedownloads</string>
-  <key>ProgramArguments</key>
-  <array>
-    <string>/Users/YOUR_NAME/Library/Scripts/organize_downloads.sh</string>
-  </array>
-  <key>StartInterval</key>
-  <integer>1800</integer>
-  <key>RunAtLoad</key>
-  <true/>
-</dict>
-</plist>
-```
-
-2. 実行するには：
-
-```bash
-launchctl load ~/Library/LaunchAgents/com.user.organizedownloads.plist
-```
+> 📌 Finder または一般的なアプリ経由で Downloads に追加されたファイルに対して自動実行されます。
 
 ---
 

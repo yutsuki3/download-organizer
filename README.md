@@ -34,9 +34,7 @@ After running the script:
 
 ---
 
-## 🔧 Usage
-
-### Manual Use
+## 🔧 Manual Usage
 
 1. **Download or clone this repository**
 2. **Run the script in your terminal**
@@ -47,81 +45,43 @@ bash organize_downloads.sh
 
 By default, it organizes files under `~/Downloads/`.
 
-> 💡 You can customize the target folder by modifying the `DOWNLOAD_DIR` variable at the top of the script.
+> 💡 You can customize the target folder by modifying the `DOWNLOAD_DIR` variable in the script.
 
 ---
 
-## 🤖 Automate with Automator on macOS
+## 🤖 Automate with Folder Action on macOS
 
-To make this script run automatically using Automator:
+To automatically execute the script whenever a file is added to your Downloads folder:
 
-### 1. Save the Script
-
-Place the script file in a safe location, for example:
-
-```
-~/Library/Scripts/organize_downloads.sh
-```
-
-Make it executable:
+### 1. Save and make the script executable
 
 ```bash
+mkdir -p ~/Library/Scripts
+cp organize_downloads.sh ~/Library/Scripts/
 chmod +x ~/Library/Scripts/organize_downloads.sh
 ```
 
-### 2. Create an Automator App
+### 2. Set up a Folder Action using Automator
 
-1. Open **Automator**
-2. Create a new **Application**
-3. Add the **Run Shell Script** action
-4. In the shell script box, enter:
+1. Open the **Automator** app
+2. Create a new **Folder Action**
+3. Choose `Downloads` as the folder to watch
+4. Add the **Run Shell Script** action
+5. In the script box, enter:
 
 ```bash
 ~/Library/Scripts/organize_downloads.sh
 ```
 
-5. Save the application, e.g., as `Downloads Organizer.app`
+6. Save the workflow (e.g. as `DownloadsOrganizer.workflow`)
 
-You can now run this app manually, or configure it to launch on login or at timed intervals.
-
----
-
-## ⏱ Optional: Run Automatically with LaunchAgent
-
-To schedule the script to run every 30 minutes:
-
-1. Create a file at `~/Library/LaunchAgents/com.user.organizedownloads.plist` with this content:
-
-```xml
-<?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
-<plist version="1.0">
-<dict>
-  <key>Label</key>
-  <string>com.user.organizedownloads</string>
-  <key>ProgramArguments</key>
-  <array>
-    <string>/Users/YOUR_NAME/Library/Scripts/organize_downloads.sh</string>
-  </array>
-  <key>StartInterval</key>
-  <integer>1800</integer>
-  <key>RunAtLoad</key>
-  <true/>
-</dict>
-</plist>
-```
-
-2. Load it with:
-
-```bash
-launchctl load ~/Library/LaunchAgents/com.user.organizedownloads.plist
-```
+> 📌 This will automatically trigger the script when new files are added to the Downloads folder via Finder or most apps.
 
 ---
 
 ## 🧪 Testing (Optional)
 
-If you'd like to test safely without touching your real Downloads folder:
+To safely test the behavior:
 
 ```bash
 mkdir -p ~/Downloads/test_env
@@ -131,7 +91,7 @@ cd ~/Downloads/test_env
 # Create dummy files
 touch file.txt file.txt image.png
 
-# Modify DOWNLOAD_DIR in the script to:
+# Modify the script's DOWNLOAD_DIR to:
 # DOWNLOAD_DIR="$HOME/Downloads/test_env"
 bash organize_downloads.sh
 ```
